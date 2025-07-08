@@ -1,0 +1,13 @@
+#carpeta de node-modules
+node_modules
+
+
+# archivos .env
+.env*
+
+# no ignorar ".env.example"
+!.env.example
+
+# otras cosas que el profe ignora
+/tmp
+no_*

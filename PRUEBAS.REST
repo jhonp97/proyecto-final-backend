@@ -1,0 +1,125 @@
+@domain=http://localhost:3001
+# info de TMB
+@apitoken=eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwZmIyZThiMmUwYjE1YWU0Zjg3MTg2NjVjYWVkY2FjZCIsIm5iZiI6MTc1MDcwMTM5MS4yNDQsInN1YiI6IjY4NTk5NTRmMzYxYjEzMzViMjBjY2MwNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.0IRmCUP93dK_JJ7r9vN7ZfC_RutLoXFEJfoCC_2cx04
+@apikey=0fb2e8b2e0b15ae4f8718665caedcacd
+@tmdbapi=https://api.themoviedb.org/3/
+@imgurl=https://image.tmdb.org/t/p/w500/
+
+### 1) Próximos estrenos
+GET {{tmdbapi}}movie/upcoming?api_key={{apikey}}&language=es-ES&page=1
+
+### 2) Top Rated
+GET {{tmdbapi}}movie/top_rated?api_key={{apikey}}&language=es-ES&page=1
+
+### 3) Listado de géneros (categorías)
+GET {{tmdbapi}}genre/movie/list?api_key={{apikey}}&language=es-ES
+
+### 4) Películas de Ciencia Ficción
+GET {{tmdbapi}}discover/movie?api_key={{apikey}}&with_genres=878&language=es-ES&sort_by=popularity.desc
+
+### 5) Películas de 2025 ordenadas por popularidad
+GET {{tmdbapi}}discover/movie?api_key={{apikey}}&primary_release_year=2025&language=es-ES&sort_by=popularity.desc
+
+### 6) Ciencia Ficción con rating ≥8 y votos ≥1000
+GET {{tmdbapi}}discover/movie?api_key={{apikey}}&with_genres=878&vote_average.gte=8&vote_count.gte=1000&language=es-ES&sort_by=vote_average.desc
+
+### 7) Búsqueda de películas que contengan "matrix"
+GET {{tmdbapi}}search/movie?api_key={{apikey}}&query=matrix&language=es-ES&page=1
+
+
+
+
+
+
+
+
+
+### obtener pelis populares
+GET {{{tmdbapi}}}/movie/popular
+Authorization: Bearer {{apitoken}}
+
+### obtener pelis upcoming
+GET {{tmdbapi}}/movie/upcoming
+Authorization: Bearer {{apitoken}}
+
+### obtener pelis top rated
+GET {{tmdbapi}}/movie/top_rated
+Authorization: Bearer {{apitoken}}
+
+
+
+
+
+### Variables
+@apiurl = http://localhost:5000/api/v1
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NWMzMjgwZGQwMWIzNTYzMzU0ZWZjOSIsInVzZXJuYW1lIjoidXN1YXJpbzEyMyIsImlhdCI6MTc1MDg3MjcwNCwiZXhwIjoxNzUxNDc3NTA0fQ.twsHAN56isK13b81x1EnQqeGJgoOBUzy51reSJ4Wk4A
+
+###
+# REGISTRAR USUARIO
+POST {{apiurl}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "usuario@ejemplo.com",
+  "password": "123456",
+  "username": "usuario123"
+}
+
+###
+# LOGIN USUARIO
+POST {{apiurl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "usuario@ejemplo.com",
+  "password": "123456"
+}
+
+###
+# OBTENER USUARIO ACTUAL
+GET {{apiurl}}/auth/me
+Authorization: Bearer {{token}}
+
+###
+# AGREGAR PELÍCULA VISTA
+POST {{apiurl}}/peliculas/agregar
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "tmdbId": 152601,
+  "titulo": "Minions",
+  "poster": "https://image.tmdb.org/t/p/w500/q0xV3oaQWCnnZFeaDP1D2pmPynU.jpg",
+  "calificacion": 4
+}
+
+###
+# MODIFICAR CALIFICACIÓN DE UNA PELÍCULA
+PATCH {{apiurl}}/peliculas/calificar/685c32c1dd01b3563354efce
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "calificacion": 5
+}
+
+###
+# VER MIS PELÍCULAS VISTAS
+GET {{apiurl}}/peliculas/mis-peliculas
+Authorization: Bearer {{token}}
+
+###
+# VER LISTA PÚBLICA DE OTRO USUARIO
+GET {{apiurl}}/peliculas/publica/usuario123
+
+###
+# TMDB - PELÍCULAS POPULARES
+GET {{apiurl}}/tmdb/populares
+
+###
+# TMDB - DETALLE DE UNA PELÍCULA POR ID
+GET {{apiurl}}/tmdb/pelicula/152601
+
+###
+# TMDB - BUSCAR PELÍCULA POR TÍTULO
+GET {{apiurl}}/tmdb/buscar?query=batman
