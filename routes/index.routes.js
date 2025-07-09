@@ -1,5 +1,6 @@
 
 import express from "express";
+
 import { authMiddleware } from "../middleware/auth.middleware.js";
 
 // Controladores de autenticacion
@@ -24,9 +25,9 @@ const router = express.Router();
 
 
 //  AUTENTICACIÓN
-router.post("/auth/register", registerUser);
-router.post("/auth/login", loginUser);
-router.get("/auth/me", authMiddleware, getCurrentUser);
+router.post("/register", registerUser);
+router.post("/login", loginUser);
+router.get("/me", authMiddleware, getCurrentUser);
 
 
 //PELICULAS RUTA BASE API

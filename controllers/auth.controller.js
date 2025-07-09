@@ -1,13 +1,66 @@
-import { User } from "../db/models/user.js"; 
+import { User } from "../db/models/user.js";
 
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { jwtSecret } from "../config/config.js";
+// import { jwtSecret } from "../config/config.js";
 
 const ResponseApi = {
   msg: "",
   status: "ok",
   data: {},
+};
+//  REGISTRO
+export const registerUser = async (req, res, next) => {
+  try {
+    const { email, password, username } = req.body;
+
+    // valido los datos
+    if (!email || !password || !username) {
+      return res.status(400).json({ msg: "Todos los campos son obligatorios" });
+    }
+
+    // verifico si ya existe
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({
+        msg: "Ese correo ya está registrado. Inicia sesión.",
+      });
+    }
+
+    // Hasheo la contraseña 
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Crear usuario
+    const nuevoUsuario = await User.create({
+      username,
+      email,
+      password: hashedPassword,
+    });
+
+    // Verificar si se creó correctamente
+  console.log("Nuevo usuario creado:", nuevoUsuario);
+
+    // Crear token
+    const token = jwt.sign(
+      {id: nuevoUsuario._id},
+      process.env.JWT_SECRET, // clave secreta del JWT de archivo .env
+      { expiresIn: "7d" }
+    );
+
+    // Preparar respuesta
+    ResponseApi.msg = "Usuario registrado correctamente";
+    ResponseApi.data = {
+      id: nuevoUsuario._id,
+      email: nuevoUsuario.email,
+      username: nuevoUsuario.username,
+      token,
+    };
+
+    return res.status(201).json(ResponseApi);
+  } catch (error) {
+    next(error);
+  }
 };
 
 
@@ -35,8 +88,8 @@ export const loginUser = async (req, res, next) => {
       },
       jwtSecret,
       { expiresIn: "7d" });
-       console.log("JWT_SECRET usado para verificar:", jwtSecret)
-   
+    console.log("JWT_SECRET usado para verificar:", jwtSecret)
+
     ResponseApi.msg = "Inicio de sesión correcto";
     ResponseApi.data = {
       id: existingUser._id,
@@ -51,61 +104,6 @@ export const loginUser = async (req, res, next) => {
   }
 };
 
-//  REGISTRO
-export const registerUser = async (req, res, next) => {
-  try {
-    const { email, password, username } = req.body;
-
-    // Validar datos
-    if (!email || !password || !username) {
-      return res.status(400).json({ msg: "Todos los campos son obligatorios" });
-    }
-
-    // Verificar si ya existe
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({
-        msg: "Ese correo ya está registrado. Inicia sesión.",
-      });
-    }
-
-    // Hashear contraseña 
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    // Crear usuario
-    const nuevoUsuario = new User({
-      email,
-      password: hashedPassword,
-      username,
-    });
-
-    await nuevoUsuario.save();
-
-    // Crear token
-    const token = jwt.sign(
-      {
-        id: nuevoUsuario._id,
-        username: nuevoUsuario.username,
-      },
-      jwtSecret,
-      { expiresIn: "7d" }
-    );
-
-    // Preparar respuesta
-    ResponseApi.msg = "Usuario registrado correctamente";
-    ResponseApi.data = {
-      id: nuevoUsuario._id,
-      email: nuevoUsuario.email,
-      username: nuevoUsuario.username,
-      token,
-    };
-
-    return res.status(201).json(ResponseApi);
-  } catch (error) {
-    next(error);
-  }
-};
 
 //  USUARIO ACTUAL
 export const getCurrentUser = async (req, res, next) => {

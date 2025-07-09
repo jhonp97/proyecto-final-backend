@@ -1,55 +1,78 @@
+// creo el modelo del usuario que se guardara en la base de datos MongoDB 
+
+
 import mongoose from "mongoose";
 
 const options = {
-    collection: "users", // nombre de la coleccion en MongoDB
-    strict: true, // solo permite guardar los campor definidos en el eschema 
-    collation: {
-        locale: "es", // idioma de la coleccion
-        strength: 1 // ignora mayusculas y minusculas
-    }
+  collection: "users", // nombre de la coleccion en MongoDB
+  strict: true, // solo permite guardar los campor definidos en el eschema 
+  timestamps: true, // agrega createdAt y updatedAt automaticamente
+  collation: {
+    locale: "es", // idioma de la coleccion
+    strength: 1 // ignora mayusculas y minusculas
+  }
 }
 
 
 const userSchema = new mongoose.Schema({
 
-  name: {
-    type: String,
-    required: true,
-    minlength: 3, // para que tenga al menos 3 caracteres
-    maxlength: 30, // para que no tenga mas de 30 caracteres
 
-  },
   username: {
     type: String,
     required: true,
     unique: true,
-    minlength: 3, 
-    maxlength: 30, 
+    minlength: 3,
+    maxlength: 30,
+    trim: true,
   },
   email: {
     type: String,
     required: true,
     unique: true,
     lowercase: true,
+    trim: true,
   },
   password: {
     type: String,
     required: true,
     minlength: 6, // para que tenga al menos 6 caracteres
   },
-  bio:{
+  bio: {
     type: String,
     maxlength: 160, // para que no tenga mas de 160 caracteres
-    default: ""
+    default: "Hola mundo de Aniverse", // mensaje por defecto
+    trim: true,
   },
-  fotoPerfil:{
+  fotoPerfil: {
     type: String,
-    default: "/img/avatar1.PNG" // URL de la foto de perfil por defecto
+    default: "/img/avatar1.PNG", // URL de la foto de perfil por defecto
   },
-  createdAt:{
-        type: Date,
-        default: Date.now
-    }
-},  options );
+  favoritos: [{
+    animeId: { type: Number, required: true }, // ID del anime favorito
+    title: { type: String, required: true }, // Título del anime favorito
+    image: { type: String, required: true }, // URL de la imagen del anime
+  }],
+
+  listaPrivada: [{
+    animeId: { type: Number, required: true },
+  }],
+
+  reseñas: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Review', // referencia a la colección de reseñas
+  }],
+
+  amigos:[{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', 
+  }],
+
+  solicitudAmistad: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', 
+  }],
+
+  
+}, options);
 
 export const User = mongoose.model("User", userSchema);
