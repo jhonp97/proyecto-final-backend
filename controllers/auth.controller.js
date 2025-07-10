@@ -2,7 +2,7 @@ import { User } from "../db/models/user.js";
 
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-// import { jwtSecret } from "../config/config.js";
+ import { jwtSecret } from "../config/config.js";
 
 const ResponseApi = {
   msg: "",
@@ -64,17 +64,26 @@ export const registerUser = async (req, res, next) => {
 };
 
 
+//  LOGIN
+
 export const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    // Verificar si el usuario existe
+    // validar los datos recibidos
+    if(!email || !password){
+      return res.status(400).json({ msg: "por favor ingrese su correo y contraseña" });
+      
+    }
+
+    //verificar si el usuario existe
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
       return res.status(401).json({ msg: "El usuario no existe" });
-    }
+    } console.log("usuario es ", existingUser);
 
-    // Comparar contraseña
+
+    // comparar contraseña
     const esCorrecta = await bcrypt.compare(password, existingUser.password);
     if (!esCorrecta) {
       return res.status(401).json({ msg: "Contraseña incorrecta" });
@@ -95,6 +104,8 @@ export const loginUser = async (req, res, next) => {
       id: existingUser._id,
       email: existingUser.email,
       username: existingUser.username,
+      bio: existingUser.bio,
+      fotoPerfil: existingUser.fotoPerfil,
       token,
     };
 

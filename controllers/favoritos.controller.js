@@ -1,12 +1,12 @@
 import { User } from "../db/models/user.js";
 import { listaFavoritose } from "../db/models/listaFavoritos.js";
 
-// aquines para agregar las peliculas vistas
+// aqui es para agregar los animes a favoritos
 export const agregarFavorito = async (req, res, next) => {
   try {
-    const {  } = req.body;
+    const { animeId } = req.body;
     const usuarioId = req.userId; // viene del middleware
-
+  
     // const yaExiste = await WatchedMovie.findOne({ usuarioId, tmdbId });
     // if (yaExiste) {
     //   return res.status(400).json({ msg: "Ya habías agregado esta película" });
@@ -23,10 +23,10 @@ export const agregarFavorito = async (req, res, next) => {
 //     await nuevaPelicula.save();
 //     res.status(201).json({ msg: "Película agregada", pelicula: nuevaPelicula });
 
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+  } catch (error) {
+    next(error);
+   }
+};
 
 // // Ver las  peliculas vistas del usuario autenticado
 // export const obtenerPeliculasVistas = async (req, res, next) => {
