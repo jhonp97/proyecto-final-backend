@@ -26,9 +26,9 @@ router.get("/auth/me", authMiddleware, getCurrentUser);
 
 
 //  USUARIOS - RUTAS PROTEGIDAS
- router.put("/perfil", authMiddleware, updatePerfil);
-router.post("/favoritos", authMiddleware, agregarFavorito);
- router.get("/favoritos", authMiddleware, obtenerFavoritos);
+//  router.put("/perfil", authMiddleware, updatePerfil);
+// router.post("/favoritos", authMiddleware, agregarFavorito);
+//  router.get("/favoritos", authMiddleware, obtenerFavoritos);
 
 
 // //  PELÍCULAS - RUTAS PÚBLICAS

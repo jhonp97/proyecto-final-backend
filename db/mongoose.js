@@ -1,10 +1,10 @@
 
 import mongoose from "mongoose";
-import { DOMAIN, port, jwtSecret, mongoURI, tmdbKey, tmdbAccessToken} from "../config/config.js";
+import { DOMAIN, port, jwtSecret, mongoURI, CLUSTER} from "../config/config.js";
 
 export const conectarDB = async () => {
-    const url = mongoURI;
-    console.log(url)
+    const url = mongoURI+CLUSTER;
+    console.log("mi base de datos es " + url)
   try {
     await mongoose.connect(url);
     console.log(" Conexión a MongoDB compass exitosa");

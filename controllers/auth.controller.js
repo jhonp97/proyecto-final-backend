@@ -39,7 +39,7 @@ export const registerUser = async (req, res, next) => {
     });
 
     // Verificar si se creó correctamente
-  console.log("Nuevo usuario creado:", nuevoUsuario);
+  // console.log("Nuevo usuario creado:", nuevoUsuario);
 
     // Crear token
     const token = jwt.sign(
@@ -80,7 +80,7 @@ export const loginUser = async (req, res, next) => {
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
       return res.status(401).json({ msg: "El usuario no existe" });
-    } console.log("usuario es ", existingUser);
+   } //console.log("usuario es ", existingUser) // corregir esto
 
 
     // comparar contraseña
@@ -97,7 +97,7 @@ export const loginUser = async (req, res, next) => {
       },
       jwtSecret,
       { expiresIn: "7d" });
-    console.log("JWT_SECRET usado para verificar:", jwtSecret)
+    // console.log("JWT_SECRET usado para verificar:", jwtSecret)
 
     ResponseApi.msg = "Inicio de sesión correcto";
     ResponseApi.data = {
@@ -109,6 +109,7 @@ export const loginUser = async (req, res, next) => {
       token,
     };
 
+    console.log("Datos del usuario:", ResponseApi.data);
     return res.status(200).json(ResponseApi);
   } catch (error) {
     next(error);
