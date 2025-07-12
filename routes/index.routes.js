@@ -2,7 +2,7 @@
 import express from "express";
 
 import { authMiddleware } from "../middleware/auth.middleware.js";
-
+import { agregarFavorito } from "../controllers/favoritos.controller.js";
 // Controladores de autenticacion
 import {
   registerUser,
@@ -26,8 +26,8 @@ router.get("/auth/me", authMiddleware, getCurrentUser);
 
 
 //  USUARIOS - RUTAS PROTEGIDAS
+router.post("/favoritos", authMiddleware, agregarFavorito);
 //  router.put("/perfil", authMiddleware, updatePerfil);
-// router.post("/favoritos", authMiddleware, agregarFavorito);
 //  router.get("/favoritos", authMiddleware, obtenerFavoritos);
 
 

@@ -4,13 +4,25 @@ import { listaFavoritose } from "../db/models/listaFavoritos.js";
 // aqui es para agregar los animes a favoritos
 export const agregarFavorito = async (req, res, next) => {
   try {
-    const { animeId } = req.body;
-    const usuarioId = req.userId; // viene del middleware
+    // mis datos del fronmtend
+    const { animeId, title, image } = req.body;
+    //id del usuario
+    const userId = req.userId; 
   
-    // const yaExiste = await WatchedMovie.findOne({ usuarioId, tmdbId });
-    // if (yaExiste) {
-    //   return res.status(400).json({ msg: "Ya habías agregado esta película" });
-    // }
+   const user = await User.findOne(userId);
+    if (!user) {
+     return res.status(404).json({ msg: "Usuario no encontrado" });
+     }
+await User.updateOne(
+  {_id: userId},
+  {$push: {favoritos: {animeId, title, image}}}
+)
+res.status(200).json({msg: "Anime añadido a favoritos"})
+  } catch (error) {
+    next(error);
+   }
+};
+
 
 //     const nuevaPelicula = new WatchedMovie({
 //       usuarioId,
@@ -23,10 +35,6 @@ export const agregarFavorito = async (req, res, next) => {
 //     await nuevaPelicula.save();
 //     res.status(201).json({ msg: "Película agregada", pelicula: nuevaPelicula });
 
-  } catch (error) {
-    next(error);
-   }
-};
 
 // // Ver las  peliculas vistas del usuario autenticado
 // export const obtenerPeliculasVistas = async (req, res, next) => {
