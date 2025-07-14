@@ -4,12 +4,9 @@ import express from "express";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import { agregarFavorito, eliminarFavorito, obtenerFavoritos } from "../controllers/favoritos.controller.js";
 // Controladores de autenticacion
-import {
-  registerUser,
-  loginUser,
-  getCurrentUser
-} from "../controllers/auth.controller.js";
-
+import {registerUser,loginUser,getCurrentUser} from "../controllers/auth.controller.js";
+import { updatePerfil } from "../controllers/user.controller.js";
+import upload from "../middleware/upload.middleware.js";
 
 
 const router = express.Router();
@@ -27,7 +24,7 @@ router.get("/auth/me", authMiddleware, getCurrentUser);
 
 //  USUARIOS - RUTAS PROTEGIDAS
 router.post("/favoritos", authMiddleware, agregarFavorito);
-//  router.put("/perfil", authMiddleware, updatePerfil);
+ router.put("/perfil", authMiddleware,upload.single("fotoPerfil"), updatePerfil);
  router.get("/favoritos", authMiddleware, obtenerFavoritos);
 router.delete("/favoritos/:animeId", authMiddleware, eliminarFavorito)
 
