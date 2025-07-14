@@ -2,15 +2,24 @@ import { User } from "../db/models/user";
 
 export const updatePerfil = async(req, res, next) => {
 try{
+    // 1-busco el usuario por el id del token
     const user = await User.findById(req.userId)
     if(!user){
         return res.status(404).json({msg: "usuario no encontrado"})
     }
+    // 2-actualizo los input para editar
     user.username= req.body.username || user.username;
     user.bio = req.body.bio || user.bio;
-    //acordarme de poner el codigo para la foto
-    
-    const updateUser= awaituser.save();
+
+    //3-subida de foto de perfil
+    //esta parte la he investigado para poder hacerla con multer
+    if(req.file){
+        console.log("archivo recibido: ", req.file);
+       user.fotoPerfil=`/uploads/${req.file.filename}`
+    }
+    //4- guardo el usuario actualizado en la base de datos
+    const updateUser= await user.save();
+    //5- devuelvo el usuario actualizado
     res.status(200).json(updateUser) 
 } catch(error){
     next(error)
