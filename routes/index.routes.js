@@ -2,7 +2,7 @@
 import express from "express";
 
 import { authMiddleware } from "../middleware/auth.middleware.js";
-import { agregarFavorito } from "../controllers/favoritos.controller.js";
+import { agregarFavorito, eliminarFavorito, obtenerFavoritos } from "../controllers/favoritos.controller.js";
 // Controladores de autenticacion
 import {
   registerUser,
@@ -21,17 +21,17 @@ router.post("/auth/login", loginUser);
 router.get("/auth/me", authMiddleware, getCurrentUser);
 
 
-//PELICULAS RUTA BASE API
-// router.use("/tmdb", tmdbRoutes); 
+//RUTA BASE API
+
 
 
 //  USUARIOS - RUTAS PROTEGIDAS
 router.post("/favoritos", authMiddleware, agregarFavorito);
 //  router.put("/perfil", authMiddleware, updatePerfil);
-//  router.get("/favoritos", authMiddleware, obtenerFavoritos);
+ router.get("/favoritos", authMiddleware, obtenerFavoritos);
+router.delete("/favoritos/:animeId", authMiddleware, eliminarFavorito)
 
+// RUTAS PÚBLICAS
 
-// //  PELÍCULAS - RUTAS PÚBLICAS
-// router.get("/peliculas/publica/:username", obtenerListaPublica);
 
 export { router };
