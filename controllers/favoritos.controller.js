@@ -14,7 +14,9 @@ export const agregarFavorito = async (req, res, next) => {
      }
 await User.updateOne(
   {_id: userId},
-  {$push: {favoritos: {animeId, title, image}}}
+  // {$push: {favoritos: {animeId, title, image}}}
+  // cambio $push por $addToSet para evitar duplicados porque al probarlo varias veces se agregaba el mismo anime
+  { $addToSet: { favoritos: { animeId, title, image, fecha:new Date() } } }
 )
 res.status(200).json({msg: "Anime añadido a favoritos"})
   } catch (error) {
