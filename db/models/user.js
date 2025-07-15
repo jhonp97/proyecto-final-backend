@@ -51,7 +51,7 @@ const userSchema = new mongoose.Schema({
     animeId: { type: Number, required: true }, // ID del anime favorito
     title: { type: String, required: true }, // Título del anime favorito
     image: { type: String, required: true }, // URL de la imagen del anime
-    genero: { type: String, required: true }, // genero del anime
+    genero: { type: String}, // genero del anime
     score : { type: Number, default: 0 }, // puntuación del anime
     fecha: { type: Date, default: Date.now }, // Fecha de adición del anime a favoritos
 
