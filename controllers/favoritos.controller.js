@@ -4,7 +4,7 @@ import { User } from "../db/models/user.js";
 export const agregarFavorito = async (req, res, next) => {
   try {
     // mis datos del fronmtend
-    const { animeId, title, image, genero } = req.body;
+    const { animeId, title, image, genero, score } = req.body;
     //id del usuario
     const userId = req.userId; 
   
@@ -16,7 +16,7 @@ await User.updateOne(
   {_id: userId},
   // {$push: {favoritos: {animeId, title, image}}}
   // cambio $push por $addToSet para evitar duplicados porque al probarlo varias veces se agregaba el mismo anime
-  { $addToSet: { favoritos: { animeId, title, image, genero, fecha:new Date() } } }
+  { $addToSet: { favoritos: { animeId, title, image, score, genero, fecha:new Date() } } }
 )
 res.status(200).json({msg: "Anime añadido a favoritos"})
   } catch (error) {

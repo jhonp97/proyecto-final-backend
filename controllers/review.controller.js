@@ -1,5 +1,5 @@
-import { Review } from "../db/models/review"
-import { User } from "../db/models/user"
+import { Review } from "../db/models/review.js"
+import { User } from "../db/models/user.js"
 
 
 export const CrearReseña = async (req, res, next) => {
