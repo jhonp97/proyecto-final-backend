@@ -18,13 +18,18 @@ try{
     await User.findByIdAndUpdate(userId,{$push: {reseñas:newReview._id}})
     res.status(201).json(newReview);
 }catch(error){
-    // manejo el error si el usuario ya ha hecho reseña a este anime
-    res.status(400).json({msg: "Ya has puesto una reseña"})
-    
-}next(error);
+    next(error);
+}
 }
 
 export const ObtenerReseñas = async (req, res, next) => {
+    try{
+        const{animeId}=req.params;
+        const reviews= await Review.find({animeId}).populate("user", "username fotoPerfil")
+        res.status(200).json(reviews);
+    }catch(error){
+        next(error);
+    }
 }
 
 export const ActualizarReseña = async (req, res, next) => {

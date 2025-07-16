@@ -7,6 +7,7 @@ import { agregarFavorito, eliminarFavorito, obtenerFavoritos } from "../controll
 import {registerUser,loginUser,getCurrentUser} from "../controllers/auth.controller.js";
 import { updatePerfil } from "../controllers/user.controller.js";
 import upload from "../middleware/upload.middleware.js";
+import { CrearReseña, ObtenerReseñas } from "../controllers/review.controller.js";
 
 
 const router = express.Router();
@@ -27,6 +28,8 @@ router.post("/favoritos", authMiddleware, agregarFavorito);
  router.put("/perfil", authMiddleware,upload.single("fotoPerfil"), updatePerfil);
  router.get("/favoritos", authMiddleware, obtenerFavoritos);
 router.delete("/favoritos/:animeId", authMiddleware, eliminarFavorito)
+router.post('/reviews', authMiddleware, CrearReseña);
+router.get('/reviews/:animeId', ObtenerReseñas);
 
 // RUTAS PÚBLICAS
 
