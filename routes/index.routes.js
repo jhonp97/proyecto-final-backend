@@ -31,10 +31,10 @@ router.delete("/favoritos/:animeId", authMiddleware, eliminarFavorito)
 
 // RESEÑAS
 router.post('/reviews', authMiddleware, CrearReseña);
+router.get('/reviews/my-reviews', authMiddleware, verMisReseñas);
 router.get('/reviews/:animeId', ObtenerReseñas);
 router.put('/reviews/:reviewId', authMiddleware, ActualizarReseña);
 router.delete('/reviews/:reviewId', authMiddleware, EliminarReseña);
-router.get('/reviews/me', authMiddleware, verMisReseñas);
 
 // RUTAS PÚBLICAS
 

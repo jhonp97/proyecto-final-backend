@@ -5,8 +5,19 @@
 //3- luego se hace un indice para que el usuario solo pueda hacer un comentario o reseña por anime 
 import mongoose from "mongoose";
 //1
+
+const options = {
+  collection: "reviews",
+  strict: true,
+  timestamps: true,
+  collation: {
+    locale: "es",
+    strength: 1
+  }
+};
+
 const reviewSchema= new mongoose.Schema({
-    animeId:{ type: Number, require:true},
+    animeId:{ type: Number, required:true},
     animeTitle:{ type: String, required:true},
     animeImage:{ type: String, required:true},
     user:{
@@ -25,7 +36,7 @@ const reviewSchema= new mongoose.Schema({
         required: true,
         trim: true,
     }
-},{timestamps:true})//2
+},options)//2
 
 //3
 reviewSchema.index({user:1, animeId:1}, {unique:true})

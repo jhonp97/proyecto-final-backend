@@ -18,6 +18,7 @@ try{
 
     //añado la referencia al usuario
     await User.findByIdAndUpdate(userId,{$push: {reseñas:newReview._id}})
+    console.log("Nueva reseña creada:", newReview);
     res.status(201).json(newReview);
 }catch(error){
     next(error);
@@ -28,6 +29,7 @@ export const ObtenerReseñas = async (req, res, next) => {
     try{
         const{animeId}=req.params;
         const reviews= await Review.find({animeId}).populate("user", "username fotoPerfil")
+        console.log("Reseñas obtenidas:", reviews);
         res.status(200).json(reviews);
     }catch(error){
         next(error);
@@ -51,6 +53,7 @@ export const ActualizarReseña = async (req, res, next) => {
     review.rating = rating || review.rating;
     review.comment = comment || review.comment;
     const updatedReview = await review.save();
+    console.log("Reseña actualizada:", updatedReview);
     res.status(200).json(updatedReview);
   } catch (error) {
     next(error);
@@ -73,6 +76,7 @@ export const EliminarReseña = async (req, res, next) => {
     await review.deleteOne()
     //se elimina la referencua del array del usuario
     await User.findByIdAndUpdate(userId, { $pull: { reseñas: reviewId } });
+    console.log("Reseña eliminada:", reviewId);
     res.status(200).json({msg: "Reseña eliminada correctamente." });
   } catch (error) {
     next(error);
@@ -80,8 +84,13 @@ export const EliminarReseña = async (req, res, next) => {
 }
 
 export const verMisReseñas= async (req, res, next)=>{
+  // esta funcion es para ver las reseñas del usuario logueado
+  // se usa en el perfil del usuario
+  // se ordenan por fecha de creacion
   try{
     const misReseñas= await Review.find({user: req.userId}).sort({createdAt: -1})
+
+    console.log("Mis reseñas:", misReseñas);
     res.status(200).json(misReseñas)
   }catch(error){
     next(error);
