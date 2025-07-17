@@ -2,7 +2,7 @@ import { User } from "../db/models/user.js";
 
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
- import { jwtSecret } from "../config/config.js";
+import { jwtSecret } from "../config/config.js";
 
 const ResponseApi = {
   msg: "",
@@ -39,11 +39,11 @@ export const registerUser = async (req, res, next) => {
     });
 
     // Verificar si se creó correctamente
-  // console.log("Nuevo usuario creado:", nuevoUsuario);
+    // console.log("Nuevo usuario creado:", nuevoUsuario);
 
     // Crear token
     const token = jwt.sign(
-      {id: nuevoUsuario._id},
+      { id: nuevoUsuario._id },
       process.env.JWT_SECRET, // clave secreta del JWT de archivo .env
       { expiresIn: "7d" }
     );
@@ -71,16 +71,16 @@ export const loginUser = async (req, res, next) => {
     const { email, password } = req.body;
 
     // validar los datos recibidos
-    if(!email || !password){
+    if (!email || !password) {
       return res.status(400).json({ msg: "por favor ingrese su correo y contraseña" });
-      
+
     }
 
     //verificar si el usuario existe
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
       return res.status(401).json({ msg: "El usuario no existe" });
-   } //console.log("usuario es ", existingUser) // corregir esto
+    } //console.log("usuario es ", existingUser) // corregir esto
 
 
     // comparar contraseña
@@ -106,6 +106,11 @@ export const loginUser = async (req, res, next) => {
       username: existingUser.username,
       bio: existingUser.bio,
       fotoPerfil: existingUser.fotoPerfil,
+      favoritos: existingUser.favoritos,
+      reseñas: existingUser.reseñas,
+      listaPrivada: existingUser.listaPrivada,
+      amigos: existingUser.amigos,
+      solicitudAmistad: existingUser.solicitudAmistad,
       token,
     };
 

@@ -7,7 +7,7 @@ import { agregarFavorito, eliminarFavorito, obtenerFavoritos } from "../controll
 import {registerUser,loginUser,getCurrentUser} from "../controllers/auth.controller.js";
 import { updatePerfil } from "../controllers/user.controller.js";
 import upload from "../middleware/upload.middleware.js";
-import { ActualizarReseña, CrearReseña, EliminarReseña, ObtenerReseñas } from "../controllers/review.controller.js";
+import { ActualizarReseña, CrearReseña, EliminarReseña, ObtenerReseñas, verMisReseñas } from "../controllers/review.controller.js";
 
 
 const router = express.Router();
@@ -34,6 +34,7 @@ router.post('/reviews', authMiddleware, CrearReseña);
 router.get('/reviews/:animeId', ObtenerReseñas);
 router.put('/reviews/:reviewId', authMiddleware, ActualizarReseña);
 router.delete('/reviews/:reviewId', authMiddleware, EliminarReseña);
+router.get('/reviews/me', authMiddleware, verMisReseñas);
 
 // RUTAS PÚBLICAS
 

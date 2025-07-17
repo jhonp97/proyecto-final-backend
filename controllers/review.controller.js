@@ -4,12 +4,14 @@ import { User } from "../db/models/user.js"
 
 export const CrearReseña = async (req, res, next) => {
 try{
-    const {animeId, rating, comment}= req.body;
+    const {animeId, rating, comment, animeTitle, animeImage}= req.body;
     const userId= req.userId
     // creo la reseña
     const newReview= await Review.create({
         animeId,
         user:userId,
+        animeTitle,
+        animeImage,
         rating,
         comment
     });
@@ -73,6 +75,15 @@ export const EliminarReseña = async (req, res, next) => {
     await User.findByIdAndUpdate(userId, { $pull: { reseñas: reviewId } });
     res.status(200).json({msg: "Reseña eliminada correctamente." });
   } catch (error) {
+    next(error);
+  }
+}
+
+export const verMisReseñas= async (req, res, next)=>{
+  try{
+    const misReseñas= await Review.find({user: req.userId}).sort({createdAt: -1})
+    res.status(200).json(misReseñas)
+  }catch(error){
     next(error);
   }
 }
