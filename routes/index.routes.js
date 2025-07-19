@@ -8,6 +8,7 @@ import {registerUser,loginUser,getCurrentUser} from "../controllers/auth.control
 import { updatePerfil } from "../controllers/user.controller.js";
 import upload from "../middleware/upload.middleware.js";
 import { ActualizarReseña, CrearReseña, EliminarReseña, ObtenerReseñas, verMisReseñas } from "../controllers/review.controller.js";
+import { agregarAListaPrivada, obtenerFavoritosPriv } from "../controllers/privateList.controller.js";
 
 
 const router = express.Router();
@@ -36,7 +37,11 @@ router.get('/reviews/:animeId', ObtenerReseñas);
 router.put('/reviews/:reviewId', authMiddleware, ActualizarReseña);
 router.delete('/reviews/:reviewId', authMiddleware, EliminarReseña);
 
-// RUTAS PÚBLICAS
+// LISTA PRIVADA
+router.post('/listaPrivada', authMiddleware, agregarAListaPrivada);
+router.get("/listaPrivada", authMiddleware, obtenerFavoritosPriv);
+router.delete("/listaPrivada/", authMiddleware, eliminarFavorito)
+
 
 
 export { router };
