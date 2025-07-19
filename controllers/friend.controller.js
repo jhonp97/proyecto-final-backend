@@ -11,6 +11,7 @@ export const obtenerDatosAmigos = async (req, res, next) => {
       amigos: user.amigos,
       solicitudes: user.solicitudAmistad
     });
+    console.log(`mis amigos son ${amigos.lenght} y mis solicitudes son ${solicitudes.lenght}`)
   } catch (error) {
     next(error);
   }
@@ -31,10 +32,45 @@ export const AceptarSolicitudAmigo = async (req, res, next) => {
       $addToSet: { amigos: userId }
     });
 
+    console.log(`nuevo amigo agregado, total: ${amigos.lenght} amigos y mis solicitudes son ${solicitudes.lenght}`)
     res.status(200).json({ msg: "Solicitud de amistad aceptada." });
   } catch (error) {
     next(error);
   }
 };
 
-//ACORDARME HACER LAS OTRAS FUNCIONES QUE FALTAN Y PROBAR QUE FUNCIONE
+//ENVIAR SOLICITUD 
+export const enviarSolicitud=async(req, res, next )=>{
+    try{
+        const {usuarioQueRecibe} =req.params; //Id del ususario que recibe la solicitud
+        const usuarioQueEnvia= req.userId //Id del usuario que la envia
+
+        await User.findByIdAndUpdate(usuarioQueRecibe,{
+            $addToSet: {solicitudAmistad: usuarioQueEnvia}
+        })
+
+        console.log(`solicitud enviada a ${usuarioQueRecibe}`)
+        res.status(200).json({ msg: "Solicitud de amistad enviada." });
+    } catch(error){
+        next(error)
+    }
+}
+
+
+//RECHAZAR SOLICITUD
+export const rechazarSolicitudAmistad = async (req, res, next) => {
+  try {
+      const {usuarioQueEnvia} = req.params; 
+    const  usuarioQueRecibe = req.userId; 
+
+    // la elimin0 de la lista de solicitudes
+    await User.findByIdAndUpdate(usuarioQueRecibe, {
+      $pull: { solicitudAmistad: usuarioQueEnvia}
+    });
+
+    console.log(`se ha rechazado la solicitud de ${usuarioQueEnvia}`)
+    res.status(200).json({ msg: "Solicitud de amistad rechazada." });
+  } catch (error) {
+    next(error);
+  }
+};

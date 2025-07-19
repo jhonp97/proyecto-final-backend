@@ -59,6 +59,8 @@ const userSchema = new mongoose.Schema({
 
   listaPrivada: [{
     animeId: { type: Number, required: true },
+    title: { type: String, required: true }, 
+    image: { type: String, required: true },
   }],
 
   reseñas: [{

@@ -25,3 +25,19 @@ try{
     next(error)
 } }
  
+//PERFIL PUBLICO
+export const getPublicProfile = async (req, res, next) => {
+  try {
+    const { username } = req.params;
+    const userProfile = await User.findOne({ username })
+      .select('username fotoPerfil bio favoritos reseñas'); // Solo los campos públicos
+    
+    if (!userProfile) {
+      return res.status(404).json({ msg: "Usuario no encontrado." });
+    }
+    // console.log("")
+    res.status(200).json(userProfile);
+  } catch (error) {
+    next(error);
+  }
+};

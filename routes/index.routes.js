@@ -1,14 +1,16 @@
 
 import express from "express";
 
+//middlewares
 import { authMiddleware } from "../middleware/auth.middleware.js";
-import { agregarFavorito, eliminarFavorito, obtenerFavoritos } from "../controllers/favoritos.controller.js";
+import upload from "../middleware/upload.middleware.js";
+
 // Controladores de autenticacion
+import { agregarFavorito, eliminarFavorito, obtenerFavoritos } from "../controllers/favoritos.controller.js";
 import {registerUser,loginUser,getCurrentUser} from "../controllers/auth.controller.js";
 import { updatePerfil } from "../controllers/user.controller.js";
-import upload from "../middleware/upload.middleware.js";
 import { ActualizarReseña, CrearReseña, EliminarReseña, ObtenerReseñas, verMisReseñas } from "../controllers/review.controller.js";
-import { agregarAListaPrivada, obtenerFavoritosPriv } from "../controllers/privateList.controller.js";
+import { agregarAListaPrivada, eliminarFavoritoPriv, obtenerFavoritosPriv } from "../controllers/privateList.controller.js";
 
 
 const router = express.Router();
@@ -20,14 +22,14 @@ router.post("/auth/login", loginUser);
 router.get("/auth/me", authMiddleware, getCurrentUser);
 
 
-//RUTA BASE API
+//  RUTA DE PERFIL DE USUARIO (PROTEGIDA) 
+router.put("/perfil", authMiddleware,upload.single("fotoPerfil"), updatePerfil);
 
 
 
-//  USUARIOS - RUTAS PROTEGIDAS
+//  FAVORITOS - RUTAS PROTEGIDAS
+router.get("/favoritos", authMiddleware, obtenerFavoritos);
 router.post("/favoritos", authMiddleware, agregarFavorito);
- router.put("/perfil", authMiddleware,upload.single("fotoPerfil"), updatePerfil);
- router.get("/favoritos", authMiddleware, obtenerFavoritos);
 router.delete("/favoritos/:animeId", authMiddleware, eliminarFavorito)
 
 // RESEÑAS
@@ -38,9 +40,9 @@ router.put('/reviews/:reviewId', authMiddleware, ActualizarReseña);
 router.delete('/reviews/:reviewId', authMiddleware, EliminarReseña);
 
 // LISTA PRIVADA
-router.post('/listaPrivada', authMiddleware, agregarAListaPrivada);
 router.get("/listaPrivada", authMiddleware, obtenerFavoritosPriv);
-router.delete("/listaPrivada/", authMiddleware, eliminarFavorito)
+router.post('/listaPrivada', authMiddleware, agregarAListaPrivada);
+router.delete("/listaPrivada/:animeId", authMiddleware, eliminarFavoritoPriv)
 
 
 
