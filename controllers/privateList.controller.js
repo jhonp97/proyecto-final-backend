@@ -3,10 +3,10 @@ import { User } from "../db/models/user.js";
 
 export const agregarAListaPrivada= async (req, res, next) => {
   try {
-    const { animeId, title, image} = req.body;
+    const { animeId, title, image, score, genero} = req.body;
     await User.updateOne(
   {_id: req.userId},
-  { $addToSet: { listaPrivada: { animeId, title, image }}}
+  { $addToSet: { listaPrivada: { animeId, title, image, score, genero }}}
 )
 res.status(200).json({msg: "Anime añadido a la lista privada"})
   } catch (error) {

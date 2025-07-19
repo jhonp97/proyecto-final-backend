@@ -1,3 +1,9 @@
+# Variables globales para las pruebas
+@baseUrl = http://localhost:5000/api/v1
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NzE3MmNjMzkzNzgxMWJiZjhjZDQ0YSIsInVzZXJuYW1lIjoiQWTDoW4iLCJpYXQiOjE3NTI5NTY5NTgsImV4cCI6MTc1MzU2MTc1OH0.ff3CpGnGITipakOgtnzRqlJHdAyLnjyAlm5Eajl6oJ8
+
+
+
 ### 1. REGISTRAR UN NUEVO USUARIO
 POST http://localhost:5000/api/v1/auth/register
 Content-Type: application/json
@@ -26,3 +32,106 @@ Content-Type: application/json
   "email": "prueba@gmail.com",
   "password": "passwordINC"
 }
+
+### Obtener datos del usuario actual (Ruta Protegida)
+#  usa el token que guardo arriba
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{token}}
+
+
+
+# 2. PERFIL DE USUARIO
+### Actualizar perfil (solo texto) (Ruta Protegida)
+PUT {{baseUrl}}/perfil
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "bio": "Esta es mi nueva biografía actualizada desde las pruebas REST."
+}
+
+
+# 3. FAVORITOS
+
+### Añadir un anime a favoritos (Ruta Protegida)
+POST {{baseUrl}}/favoritos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "animeId": 813,
+  "title": "Dragon Ball Z",
+  "image": "https://cdn.myanimelist.net/images/anime/1277/1420221.jpg",
+  "genero": "Action",
+  "score": 8.2
+}
+
+### Obtener mi lista de favoritos (Ruta Protegida)
+GET {{baseUrl}}/favoritos
+Authorization: Bearer {{token}}
+
+### Eliminar un anime de favoritos (Ruta Protegida)
+DELETE {{baseUrl}}/favoritos/813
+Authorization: Bearer {{token}}
+
+
+
+# 4. RESEÑAS
+### Crear una nueva reseña (Ruta Protegida)
+# @name createReviewRequest
+POST {{baseUrl}}/reviews
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "animeId": 38000,
+  "animeTitle": "Kimetsu no Yaiba",
+  "animeImage": "https://cdn.myanimelist.net/images/anime/1286/99889.jpg",
+  "rating": 5,
+  "comment": "Una animación espectacular, La mejor que he visto."
+}
+
+ @reviewId = {{createReviewRequest.response.body._id}}
+
+### Obtener mis reseñas (Ruta Protegida)
+GET {{baseUrl}}/reviews/my-reviews
+Authorization: Bearer {{token}}
+
+### Obtener reseñas de un anime específico (Ruta Pública)
+GET {{baseUrl}}/reviews/38000
+
+### Actualizar mi reseña (Ruta Protegida)
+PUT {{baseUrl}}/reviews/{{reviewId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "rating": 4,
+  "comment": "bajo la nota a 4 estrellas. Sigue siendo genial."
+}
+
+### Eliminar mi reseña (Ruta Protegida)
+DELETE {{baseUrl}}/reviews/{{reviewId}}
+Authorization: Bearer {{token}}
+
+
+
+# 5. LISTA PRIVADA
+### Añadir a lista privada (Ruta Protegida)
+POST {{baseUrl}}/listaPrivada
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "animeId": 813,
+  "title": "Dragon Ball Z",
+  "image": "https://cdn.myanimelist.net/images/anime/1277/1420221.jpg"
+}
+
+### Obtener mi lista privada (Ruta Protegida)
+GET {{baseUrl}}/listaPrivada
+Authorization: Bearer {{token}}
+
+### Eliminar de la lista privada (Ruta Protegida)
+DELETE {{baseUrl}}/listaPrivada/813
+Authorization: Bearer {{token}}

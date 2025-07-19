@@ -61,6 +61,8 @@ const userSchema = new mongoose.Schema({
     animeId: { type: Number, required: true },
     title: { type: String, required: true }, 
     image: { type: String, required: true },
+    genero: { type: String}, // genero del anime
+    score : { type: Number, default: 0}, // puntuación del anime
   }],
 
   reseñas: [{
