@@ -30,7 +30,7 @@ export const perfilPublico = async (req, res, next) => {
   try {
     const { username } = req.params;
     const userProfile = await User.findOne({ username })
-      .select('username fotoPerfil bio favoritos reseñas'); // Solo los campos públicos
+      .select('username fotoPerfil bio favoritos reseñas').populate("reseñas"); // Solo los campos públicos
     
     if (!userProfile) {
       return res.status(404).json({ msg: "Usuario no encontrado." });
