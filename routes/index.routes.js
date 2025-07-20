@@ -8,9 +8,10 @@ import upload from "../middleware/upload.middleware.js";
 // Controladores de autenticacion
 import { agregarFavorito, eliminarFavorito, obtenerFavoritos } from "../controllers/favoritos.controller.js";
 import {registerUser,loginUser,getCurrentUser} from "../controllers/auth.controller.js";
-import { updatePerfil } from "../controllers/user.controller.js";
+import { perfilPublico, updatePerfil } from "../controllers/user.controller.js";
 import { ActualizarReseña, CrearReseña, EliminarReseña, ObtenerReseñas, verMisReseñas } from "../controllers/review.controller.js";
 import { agregarAListaPrivada, eliminarFavoritoPriv, obtenerFavoritosPriv } from "../controllers/privateList.controller.js";
+import { enviarSolicitud } from "../controllers/friend.controller.js";
 
 
 const router = express.Router();
@@ -44,6 +45,10 @@ router.get("/listaPrivada", authMiddleware, obtenerFavoritosPriv);
 router.post('/listaPrivada', authMiddleware, agregarAListaPrivada);
 router.delete("/listaPrivada/:animeId", authMiddleware, eliminarFavoritoPriv)
 
+// PERFIL PUBLICO
+router.get('/users/public/:username', perfilPublico);
 
+
+router.post('/friends/request/:recipientId', authMiddleware, enviarSolicitud);
 
 export { router };

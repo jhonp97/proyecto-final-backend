@@ -26,7 +26,7 @@ try{
 } }
  
 //PERFIL PUBLICO
-export const getPublicProfile = async (req, res, next) => {
+export const perfilPublico = async (req, res, next) => {
   try {
     const { username } = req.params;
     const userProfile = await User.findOne({ username })
