@@ -11,7 +11,7 @@ export const obtenerDatosAmigos = async (req, res, next) => {
       amigos: user.amigos,
       solicitudes: user.solicitudAmistad
     });
-    console.log(`mis amigos son ${user.amigos.length} y mis solicitudes son ${user.solicitudAmistad.lenght}`)
+    console.log(`mis amigos son ${user.amigos.length} y mis solicitudes son ${user.solicitudAmistad.length}`)
   } catch (error) {
     next(error);
   }
@@ -32,7 +32,7 @@ export const AceptarSolicitudAmigo = async (req, res, next) => {
       $addToSet: { amigos: usuarioQueRecibe }
     });
 
-    console.log(`nuevo amigo agregado, total: ${amigos.lenght} amigos y mis solicitudes son ${solicitudes.lenght}`)
+    console.log(`nuevo amigo agregado, total: ${amigos.length} amigos y mis solicitudes son ${solicitudes.length}`)
     res.status(200).json({ msg: "Solicitud de amistad aceptada." });
   } catch (error) {
     next(error);
