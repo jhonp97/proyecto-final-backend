@@ -11,7 +11,7 @@ import {registerUser,loginUser,getCurrentUser} from "../controllers/auth.control
 import { perfilPublico, updatePerfil } from "../controllers/user.controller.js";
 import { ActualizarReseña, CrearReseña, EliminarReseña, ObtenerReseñas, verMisReseñas } from "../controllers/review.controller.js";
 import { agregarAListaPrivada, eliminarFavoritoPriv, obtenerFavoritosPriv } from "../controllers/privateList.controller.js";
-import { enviarSolicitud } from "../controllers/friend.controller.js";
+import { AceptarSolicitudAmigo, enviarSolicitud, obtenerDatosAmigos, rechazarSolicitudAmistad } from "../controllers/friend.controller.js";
 
 
 const router = express.Router();
@@ -49,6 +49,10 @@ router.delete("/listaPrivada/:animeId", authMiddleware, eliminarFavoritoPriv)
 router.get('/users/public/:username', perfilPublico);
 
 
-router.post('/friends/request/:recipientId', authMiddleware, enviarSolicitud);
+//  RUTAS DE AMIGOS (PROTEGIDAS)
+router.get('/friends/me', authMiddleware, obtenerDatosAmigos);
+router.post('/friends/request/:usuarioQueRecibe', authMiddleware, enviarSolicitud);
+router.put('/friends/accept/:usuarioQueEnvia', authMiddleware, AceptarSolicitudAmigo);
+router.delete('/friends/reject/:usuarioQueEnvia', authMiddleware, rechazarSolicitudAmistad);
 
 export { router };
