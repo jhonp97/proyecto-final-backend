@@ -11,7 +11,7 @@ const app= express()
 
 
 //middlewares
-app.use(cors()) // permite conecvtar front y back sin errores de cors
+app.use(cors({ origin: process.env.CORS_ORIGIN || "http://localhost:3000" })) // permite conecvtar front y back sin errores de cors
 app.use(express.json())
 app.use(express.urlencoded({extended:true})) // leer los datos de formularios html
 app.use("/", express.static("public"))
