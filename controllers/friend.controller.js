@@ -32,7 +32,7 @@ export const AceptarSolicitudAmigo = async (req, res, next) => {
       $addToSet: { amigos: usuarioQueRecibe }
     });
 
-    console.log(`nuevo amigo agregado, total: ${amigos.length} amigos y mis solicitudes son ${solicitudes.length}`)
+     console.log(`nuevo amigo agregado, total: ${amigos.length} amigos y mis solicitudes son ${solicitudes.length}`)
     res.status(200).json({ msg: "Solicitud de amistad aceptada." });
   } catch (error) {
     next(error);

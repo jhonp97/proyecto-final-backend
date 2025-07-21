@@ -77,7 +77,7 @@ export const loginUser = async (req, res, next) => {
     }
 
     //verificar si el usuario existe
-    const existingUser = await User.findOne({ email }).populate("solicitudAmistad", "username fotoPerfil").populate('solicitudAmistad', 'username fotoPerfil');
+    const existingUser = await User.findOne({ email }).populate("amigos", "_id").populate('solicitudAmistad', 'username fotoPerfil');
     if (!existingUser) {
       return res.status(401).json({ msg: "El usuario no existe" });
     } //console.log("usuario es ", existingUser) // corregir esto
@@ -127,7 +127,7 @@ export const getCurrentUser = async (req, res, next) => {
   try {
     const userId = req.userId; // Viene desde authMiddleware
 
-    const user = await User.findById(userId).select("-password").populate("solicitudAmistad", "username fotoPerfil").populate('solicitudAmistad', 'username fotoPerfil');
+    const user = await User.findById(userId).select("-password").populate("amigos", "_id").populate('solicitudAmistad', 'username fotoPerfil');
     if (!user) {
       return res.status(404).json({ msg: "Usuario no encontrado" });
     }

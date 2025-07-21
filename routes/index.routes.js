@@ -12,6 +12,7 @@ import { perfilPublico, updatePerfil } from "../controllers/user.controller.js";
 import { ActualizarReseña, CrearReseña, EliminarReseña, ObtenerReseñas, verMisReseñas } from "../controllers/review.controller.js";
 import { agregarAListaPrivada, eliminarFavoritoPriv, obtenerFavoritosPriv } from "../controllers/privateList.controller.js";
 import { AceptarSolicitudAmigo, enviarSolicitud, obtenerDatosAmigos, rechazarSolicitudAmistad } from "../controllers/friend.controller.js";
+import { FiltroAnimes, obtenerAnimesPopulares } from "../controllers/animes.controller.js";
 
 
 const router = express.Router();
@@ -26,7 +27,9 @@ router.get("/auth/me", authMiddleware, getCurrentUser);
 //  RUTA DE PERFIL DE USUARIO (PROTEGIDA) 
 router.put("/perfil", authMiddleware,upload.single("fotoPerfil"), updatePerfil);
 
-
+// RUTA PUBLICA PARA API JIKAN
+router.get("/jikan/top-anime", obtenerAnimesPopulares)
+router.get("/jikan/animes", FiltroAnimes)
 
 //  FAVORITOS - RUTAS PROTEGIDAS
 router.get("/favoritos", authMiddleware, obtenerFavoritos);
