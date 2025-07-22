@@ -75,3 +75,11 @@
 4. Ejecutarlo con `npm run dev`
 
 El servidor deberia estar corriendo en `http://localhost:5000`
+
+### Rutas (PUBLICAS)
+
+* para ver animes top: `http://localhost:5000/api/v1/jikan/top-anime`
+* para ver todos los animes la ruta es: `http://localhost:5000/api/v1/jikan/top-animes?`
+* si se le añaden los parametro de busqueda se puede filtrar: `http://localhost:5000/api/v1/jikan/top-animes?q=dragon_ball` trae todos los animes de dragon ball
+* para ver reseñas de algun anime: `http://localhost:5000/api/v1/reviews/527` 
+* para ver el perfil publico de un usuario: `http://localhost:5000/api/v1/users/public/adan` 
