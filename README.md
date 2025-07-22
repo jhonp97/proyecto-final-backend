@@ -90,7 +90,7 @@ El servidor deberia estar corriendo en `http://localhost:5000`
 | `http://localhost:5000/api/v1/jikan/top-animes?q=dragon_ball`| Para filtrar, en este caso por nombre|
 | `http://localhost:5000/api/v1/reviews/527`       | para ver reseñas de algun anime por su ID|
 | `http://localhost:5000/api/v1/users/public/adan` | para ver el perfil publico de un usuario |
-|--------------------------------------------------|------------------------------------------|
+
 
 
 
