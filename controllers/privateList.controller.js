@@ -1,8 +1,9 @@
 import { User } from "../db/models/user.js";
 
-
+// añadir un anime a la lista privada
 export const agregarAListaPrivada= async (req, res, next) => {
   try {
+    // obtengo los datos del anime desde el front
     const { animeId, title, image, score, genero} = req.body;
     await User.updateOne(
   {_id: req.userId},
@@ -17,11 +18,12 @@ res.status(200).json({msg: "Anime añadido a la lista privada"})
 //obtener favoritos
 export const obtenerFavoritosPriv = async (req, res, next) => {
   try {
+    //busco el usuario por su Id y selecciono el campo de listaPrivada
     const user = await User.findById(req.userId).select('listaPrivada');
     if (!user) {
       return res.status(404).json({ msg: "Usuario no encontrado" });
     }
-    res.status(200).json(user.listaPrivada);
+    res.status(200).json(user.listaPrivada); // envio el resultado a listatPrivada
   } catch (error) {
     next(error);
   }

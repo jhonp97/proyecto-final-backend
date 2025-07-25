@@ -1,15 +1,15 @@
 import { Review } from "../db/models/review.js"
 import { User } from "../db/models/user.js"
 
-
+// CREAR RESEÑA
 export const CrearReseña = async (req, res, next) => {
 try{
     const {animeId, rating, comment, animeTitle, animeImage}= req.body;
     const userId= req.userId
-    // creo la reseña
+    // creo la reseña en la base de datos 
     const newReview= await Review.create({
         animeId,
-        user:userId,
+        user:userId, // se asocia al usuario 
         animeTitle,
         animeImage,
         rating,
@@ -25,9 +25,11 @@ try{
 }
 }
 
+// OBTENER RESEÑAS
 export const ObtenerReseñas = async (req, res, next) => {
     try{
         const{animeId}=req.params;
+        // busco todas las reseñas a un anime y populo los datos del usuario
         const reviews= await Review.find({animeId}).populate("user", "username fotoPerfil")
         console.log("Reseñas obtenidas:", reviews);
         res.status(200).json(reviews);
@@ -36,6 +38,7 @@ export const ObtenerReseñas = async (req, res, next) => {
     }
 }
 
+// ACTUALIZAR RESEÑAS
 export const ActualizarReseña = async (req, res, next) => {
      try {
     const { reviewId } = req.params;
@@ -50,9 +53,11 @@ export const ActualizarReseña = async (req, res, next) => {
     if (review.user.toString() !== userId) {
       return res.status(403).json({ msg: "No autorizado para editar esta reseña." });
     }
+    // actualizo los campos 
     review.rating = rating || review.rating;
     review.comment = comment || review.comment;
     const updatedReview = await review.save();
+
     console.log("Reseña actualizada:", updatedReview);
     res.status(200).json(updatedReview);
   } catch (error) {
@@ -60,6 +65,7 @@ export const ActualizarReseña = async (req, res, next) => {
   }
 }
 
+// ELIMINAR RESEÑA
 export const EliminarReseña = async (req, res, next) => {
     try {
     const { reviewId } = req.params;
